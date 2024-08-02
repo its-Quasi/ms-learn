@@ -3,13 +3,15 @@ import { z } from "zod";
 
 interface EnvVars {
   PORT?: number;
+  DATABASE_URL?: string;
 }
 
 const envSchema = z.object({
   PORT: z.preprocess(
     (p: string) => Number(p),
     z.number({ required_error: "Environment Variable PORT is required" })
-  )
+  ),
+  DATABASE_URL: z.string()
 });
 
 const { success, data, error } = envSchema.safeParse(process.env);
@@ -25,5 +27,6 @@ if (!success) {
 const envVars: EnvVars = data;
 
 export const envs = {
-  port: envVars.PORT
+  port: envVars.PORT,
+  db_url: envVars.DATABASE_URL
 };
