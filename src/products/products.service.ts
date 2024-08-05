@@ -15,19 +15,25 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
   }
 
   findAll() {
-    return `This action returns all products`;
+    return this.product.findMany();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} product`;
+    return this.product.findUnique({ where: { id } });
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {
-    const x = updateProductDto.name;
-    return `This action updates a #${id} #${x} product`;
+    return this.product.update({
+      where: {
+        id
+      },
+      data: updateProductDto
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} product`;
+    return this.product.delete({
+      where: { id }
+    });
   }
 }
