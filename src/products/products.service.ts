@@ -36,11 +36,11 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id: _, ...data } = updateProductDto;
     return this.product.update({
-      where: {
-        id
-      },
-      data: updateProductDto
+      where: { id },
+      data
     });
   }
 
