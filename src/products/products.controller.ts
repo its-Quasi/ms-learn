@@ -18,6 +18,7 @@ export class ProductsController {
   // @Get()
   @MessagePattern("get_all_products")
   findAll(@Payload() pagination: PaginationDto) {
+    console.log(pagination);
     return this.productsService.findAll(pagination);
   }
 
