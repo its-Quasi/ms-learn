@@ -4,6 +4,7 @@ import { z } from "zod";
 interface EnvVars {
   PORT?: number;
   DATABASE_URL?: string;
+  NATS_SERVERS?: string[]
 }
 
 const envSchema = z.object({
@@ -11,7 +12,8 @@ const envSchema = z.object({
     (p: string) => Number(p),
     z.number({ required_error: "Environment Variable PORT is required" })
   ),
-  DATABASE_URL: z.string()
+  DATABASE_URL: z.string(),
+  NATS_SERVERS: z.preprocess((p: string) => p.split(','), z.array(z.string()))
 });
 
 const { success, data, error } = envSchema.safeParse(process.env);
@@ -23,10 +25,11 @@ if (!success) {
   );
 }
 
-//extract typing
+//extract typing 
 const envVars: EnvVars = data;
 
 export const envs = {
   port: envVars.PORT,
-  db_url: envVars.DATABASE_URL
+  db_url: envVars.DATABASE_URL,
+  nats_servers: envVars.NATS_SERVERS
 };
